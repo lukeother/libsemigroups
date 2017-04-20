@@ -7,12 +7,13 @@
 
 from libc.stdint cimport uint16_t
 from libc.stdint cimport uint32_t
+from libc.stdint cimport uint64_t
 from libcpp.vector cimport vector
 from libcpp.pair cimport pair
 from libcpp cimport bool
 from libcpp cimport string
 
-cdef extern from "libsemigroups/semigroups.h" namespace "libsemigroups":
+cdef extern from "semigroups/semigroups.h" namespace "libsemigroups":
     cdef cppclass Element:
         Element* identity()
         void redefine(Element *, Element *)
@@ -49,12 +50,21 @@ cdef extern from "libsemigroups/semigroups.h" namespace "libsemigroups":
         bool test_membership(Element* x)
         vector[size_t]* factorisation(size_t pos)
         void enumerate(size_t limit)
+
+cdef extern from "semigroups/cong.h" namespace "libsemigroups":
     cdef cppclass Congruence:
-        Congruence(string, 
-                   int, 
-                   vector[pair[vector[int], vector[int]]],
-                   vector[pair[vector[int], vector[int]]])
+        Congruence(string, size_t, vector[pair[vector[uint64_t],vector[uint64_t]]],
+                        vector[pair[vector[uint64_t],vector[uint64_t]]]) except +
         int nr_classes()
+        int word_to_class_index(vector[uint64_t] word)
+        void set_report(bool val)
+        void set_max_threads(size_t nr_threads)
+        
+
+cdef extern from "semigroups/rws.h" namespace "libsemigroups":
+    cdef cppclass RWS:
+        RWS(vector[pair[vector[uint64_t],vector[uint64_t]]]) except +
+        bool is_confluent()
 
 cdef extern from "semigroups_cpp.h" namespace "libsemigroups":
     cdef cppclass PythonElement(Element):
