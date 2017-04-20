@@ -13,7 +13,7 @@ from libcpp.pair cimport pair
 from libcpp cimport bool
 from libcpp cimport string
 
-cdef extern from "semigroups/semigroups.h" namespace "libsemigroups":
+cdef extern from "libsemigroups/semigroups.h" namespace "libsemigroups":
     cdef cppclass Element:
         Element* identity()
         void redefine(Element *, Element *)
@@ -51,7 +51,7 @@ cdef extern from "semigroups/semigroups.h" namespace "libsemigroups":
         vector[size_t]* factorisation(size_t pos)
         void enumerate(size_t limit)
 
-cdef extern from "semigroups/cong.h" namespace "libsemigroups":
+cdef extern from "libsemigroups/cong.h" namespace "libsemigroups":
     cdef cppclass Congruence:
         Congruence(string, size_t, vector[pair[vector[uint64_t],vector[uint64_t]]],
                         vector[pair[vector[uint64_t],vector[uint64_t]]]) except +
@@ -61,7 +61,7 @@ cdef extern from "semigroups/cong.h" namespace "libsemigroups":
         void set_max_threads(size_t nr_threads)
         
 
-cdef extern from "semigroups/rws.h" namespace "libsemigroups":
+cdef extern from "libsemigroups/rws.h" namespace "libsemigroups":
     cdef cppclass RWS:
         RWS(vector[pair[vector[uint64_t],vector[uint64_t]]]) except +
         bool is_confluent()
